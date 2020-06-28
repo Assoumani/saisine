@@ -1,0 +1,80 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Ticket{% endblock %}
+{% block stylesheets %}
+    {{ parent() }}
+{% endblock %}
+{% block body %}
+    <div class="container">
+
+        <h1>Ticket</h1>
+        <table class="table">
+            <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ ticket.id }}</td>
+            </tr>
+            <tr>
+                <th>Name</th>
+                <td>{{ ticket.name }}</td>
+            </tr>
+            <tr>
+                <th>Surname</th>
+                <td>{{ ticket.surname }}</td>
+            </tr>
+            <tr>
+                <th>FieldActivity</th>
+                <td>{{ ticket.fieldActivity }}</td>
+            </tr>
+            <tr>
+                <th>CreatedAt</th>
+                <td>{{ ticket.createdAt ? ticket.createdAt|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>TicketNumber</th>
+                <td>{{ ticket.ticketNumber }}</td>
+            </tr>
+            <tr>
+                <th>First message</th>
+                <td>{{ ticket.firstMessage }}</td>
+            </tr>
+            </tbody>
+        </table>
+        {% if ticket.messages is not empty %}
+            {% for message in ticket.messages %}
+                <p>
+                    {{ message.authorRole }} : {{ message.body }}
+                    <a href="#" class="js-delete-msg"><span class="fa fa-trash"></span></a>
+                </p>
+            {% endfor %}
+        {% endif %}
+
+        {{ form_start(form) }}
+        {{ form_row(form.body) }}
+        {{ form_row(form.file) }}
+        {{ form_row(form._token) }}
+        <button class="btn">{{ button_label|default('Send') }}</button>
+        {{ form_end(form, {'render_rest': false}) }}
+
+        <a href="{{ path('ticket_index') }}">back to list</a>
+
+        <a href="{{ path('ticket_edit', {ticketNumber: ticket.ticketNumber}) }}">edit</a>
+
+        {{ include('ticket/_delete_form.html.twig') }}
+    </div>
+{% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+    <script>
+        $(document).ready(function () {
+            $('.js-delete-msg').on('click', function (e) {
+                e.preventDefault();
+                $(this).addClass('text-danger');
+                $(this).find('.fa')
+                    .removeClass('fa-trash')
+                    .addClass('fa-spinner')
+                    .addClass('fa-spin');
+            });
+        })
+    </script>
+{% endblock %}

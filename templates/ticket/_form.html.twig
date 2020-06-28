@@ -1,0 +1,11 @@
+{{ form_start(form) }}
+    {{ form_row(form.name) }}
+    {{ form_row(form.surname) }}
+    {{ form_row(form.mail) }}
+    {{ form_row(form.department) }}
+    {{ form_row(form.fieldActivity) }}
+    {{ form_row(form.firstMessage) }}
+{#    {{ form_row(form.messages.vars.prototype.body) }}#}
+    {{ form_row(form._token) }}
+<button class="btn">{{ button_label|default('Save') }}</button>
+{{ form_end(form, {'render_rest': false}) }}

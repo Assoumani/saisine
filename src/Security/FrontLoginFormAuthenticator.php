@@ -2,6 +2,7 @@
 
 namespace App\Security;
 
+use App\Entity\Ticket;
 use App\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -20,11 +21,11 @@ use Symfony\Component\Security\Guard\Authenticator\AbstractFormLoginAuthenticato
 use Symfony\Component\Security\Guard\PasswordAuthenticatedInterface;
 use Symfony\Component\Security\Http\Util\TargetPathTrait;
 
-class LoginFormAuthenticator extends AbstractFormLoginAuthenticator implements PasswordAuthenticatedInterface
+class FrontLoginFormAuthenticator extends AbstractFormLoginAuthenticator implements PasswordAuthenticatedInterface
 {
     use TargetPathTrait;
 
-    public const LOGIN_ROUTE = 'app_login';
+    public const LOGIN_ROUTE = 'front_login';
 
     private $entityManager;
     private $urlGenerator;
@@ -47,7 +48,8 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator implements P
     public function supports(Request $request)
     {
         return self::LOGIN_ROUTE === $request->attributes->get('_route')
-            && $request->isMethod('POST');
+            && $request->isMethod('POST')
+            && $request->request->get('username') === "Assoumani";
     }
 
     public function getCredentials(Request $request)
@@ -73,8 +75,8 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator implements P
             throw new InvalidCsrfTokenException();
         }
 
-        $user = $this->entityManager->getRepository(User::class)->findOneBy(['username' => $credentials['username']]);
-//        $user = $userProvider->loadUserByUsername($credentials['username']);
+        $user = $this->entityManager->getRepository(Ticket::class)->findOneBy(['name' => $credentials['username']]);
+        dump($user);
         if (!$user) {
             // fail authentication with a custom error
             throw new CustomUserMessageAuthenticationException('Username could not be found.');

@@ -18,6 +18,7 @@ class TicketType extends AbstractType
             ->add('name')
             ->add('surname')
             ->add('mail')
+            ->add('password')
             ->add('fieldActivity')
             ->add('department')
             ->add('createdAt')

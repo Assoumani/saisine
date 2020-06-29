@@ -13,6 +13,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 /**
  * @Route("/ticket")
@@ -34,10 +35,11 @@ class TicketController extends AbstractController
     /**
      * @Route("/new", name="ticket_new", methods={"GET","POST"})
      * @param Request $request
+     * @param UserPasswordEncoderInterface $passwordEncoder
      * @return Response
      * @throws Exception
      */
-    public function new(Request $request): Response
+    public function new(Request $request, UserPasswordEncoderInterface $passwordEncoder): Response
     {
         $ticket = new Ticket();
         $form = $this->createForm(TicketType::class, $ticket);
@@ -47,6 +49,7 @@ class TicketController extends AbstractController
             $entityManager = $this->getDoctrine()->getManager();
             $ticket->setCreatedAt(new DateTime());
             $ticket->setTicketNumber(strtoupper(uniqid(substr($ticket->getName(), 0, 2))));
+            $ticket->setPassword($passwordEncoder->encodePassword($ticket, $ticket->getPassword()));
             $entityManager->persist($ticket);
             $entityManager->flush();
 

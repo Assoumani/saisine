@@ -48,8 +48,7 @@ class FrontLoginFormAuthenticator extends AbstractFormLoginAuthenticator impleme
     public function supports(Request $request)
     {
         return self::LOGIN_ROUTE === $request->attributes->get('_route')
-            && $request->isMethod('POST')
-            && $request->request->get('username') === "Assoumani";
+            && $request->isMethod('POST');
     }
 
     public function getCredentials(Request $request)
@@ -76,8 +75,8 @@ class FrontLoginFormAuthenticator extends AbstractFormLoginAuthenticator impleme
         }
 
         $user = $this->entityManager->getRepository(Ticket::class)->findOneBy(['name' => $credentials['username']]);
-        dump($user);
         if (!$user) {
+            dd($user);
             // fail authentication with a custom error
             throw new CustomUserMessageAuthenticationException('Username could not be found.');
         }
@@ -102,11 +101,9 @@ class FrontLoginFormAuthenticator extends AbstractFormLoginAuthenticator impleme
 
     public function onAuthenticationSuccess(Request $request, TokenInterface $token, $providerKey)
     {
-        dump($this->getTargetPath($request->getSession(), $providerKey));
         if ($targetPath = $this->getTargetPath($request->getSession(), $providerKey)) {
             return new RedirectResponse($targetPath);
         }
-
         return new RedirectResponse($this->urlGenerator->generate('ticket_index'));
     }
 

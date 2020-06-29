@@ -2,6 +2,8 @@ security:
     encoders:
         App\Entity\User:
             algorithm: auto
+        App\Entity\Ticket:
+            algorithm: auto
 
     # https://symfony.com/doc/current/security.html#where-do-users-come-from-user-providers
     providers:
@@ -10,13 +12,18 @@ security:
             entity:
                 class: App\Entity\User
                 property: username
+        front_user_provider:
+            entity:
+                class: App\Entity\Ticket
+                property: name
     firewalls:
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
-        admin:
+        front:
             anonymous: lazy
             pattern: ^/front
+            provider: front_user_provider
             guard:
                 authenticators:
                     - App\Security\FrontLoginFormAuthenticator
@@ -25,7 +32,7 @@ security:
                 target: ticket_index
         default:
             anonymous: lazy
-#            provider: back_user_provider
+            provider: back_user_provider
             guard:
                 authenticators:
                     - App\Security\LoginFormAuthenticator

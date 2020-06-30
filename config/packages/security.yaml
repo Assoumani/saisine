@@ -30,6 +30,8 @@ security:
             logout:
                 path: app_logout
                 target: ticket_index
+            stateless: false
+            context: front
         default:
             anonymous: lazy
             provider: back_user_provider
@@ -39,6 +41,8 @@ security:
             logout:
                 path: app_logout
                 target: ticket_index
+            stateless: false
+            context: front
             # activate different ways to authenticate
             # https://symfony.com/doc/current/security.html#firewalls-authentication
 

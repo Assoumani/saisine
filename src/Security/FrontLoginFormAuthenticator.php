@@ -104,7 +104,9 @@ class FrontLoginFormAuthenticator extends AbstractFormLoginAuthenticator impleme
         if ($targetPath = $this->getTargetPath($request->getSession(), $providerKey)) {
             return new RedirectResponse($targetPath);
         }
-        return new RedirectResponse($this->urlGenerator->generate('ticket_index'));
+        return new RedirectResponse($this->urlGenerator->generate('ticket_show', [
+            'ticketNumber' => 'AS5EF9ECF7645AB'
+        ]));
     }
 
     protected function getLoginUrl()

@@ -27,9 +27,6 @@ security:
             guard:
                 authenticators:
                     - App\Security\FrontLoginFormAuthenticator
-            logout:
-                path: app_logout
-                target: ticket_index
             stateless: false
             context: front
         default:
@@ -38,9 +35,6 @@ security:
             guard:
                 authenticators:
                     - App\Security\LoginFormAuthenticator
-            logout:
-                path: app_logout
-                target: ticket_index
             stateless: false
             context: front
             # activate different ways to authenticate
@@ -48,10 +42,11 @@ security:
 
             # https://symfony.com/doc/current/security/impersonating_user.html
             # switch_user: true
-
+    role_hierarchy:
+        ROLE_ADMIN: ROLE_AGENT
     # Easy way to control access for large sections of your site
     # Note: Only the *first* access control that matches will be used
     access_control:
          - { path: ^/ticket/[a-zA-Z0-9], roles: IS_AUTHENTICATED_FULLY }
-#         - { path: ^/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+         - { path: ^/home, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         # - { path: ^/profile, roles: ROLE_USER }

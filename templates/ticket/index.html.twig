@@ -1,8 +1,6 @@
-{% extends 'base.html.twig' %}
+{% extends is_granted("ROLE_USER") ? 'base_front.html.twig' : 'base.html.twig' %}
 
-{% block title %}Ticket index{% endblock %}
-
-{% block body %}
+{% block page_content %}
     <h1>Ticket index</h1>
 
     <table class="table">

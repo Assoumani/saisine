@@ -1,8 +1,6 @@
-{% extends 'base.html.twig' %}
+{% extends is_granted("ROLE_USER") ? 'base_front.html.twig' : 'base.html.twig' %}
 
-{% block title %}Edit Ticket{% endblock %}
-
-{% block body %}
+{% block page_content %}
     <h1>Edit Ticket</h1>
 
     {{ include('ticket/_form.html.twig', {'button_label': 'Update'}) }}

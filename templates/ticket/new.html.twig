@@ -1,11 +1,24 @@
-{% extends 'base.html.twig' %}
+{% extends is_granted("ROLE_AGENT") ? 'base.html.twig' : 'base_front.html.twig' %}
 
-{% block title %}New Ticket{% endblock %}
+{% block page_content %}
+    <h1>Nouveau Dossier</h1>
+    {% if is_granted("ROLE_AGENT") %}
+        {{ include('ticket/_form.html.twig') }}
+        <a href="{{ path('ticket_index') }}">back to list</a>
+    {% else %}
+        <div class="row justify-content-end m-3">
+            <a href="{{ path('admin') }}" class="btn btn-outline-info {{ is_granted("ROLE_USER") ? 'disabled' : '' }}">Go to Admin</a>
+        </div>
+        <div class="row row-cols-2 ">
+            <div class="col-8">
+                {{ include('ticket/_form.html.twig') }}
+            </div>
+            <div class="col-4">
+                <h4>Acceder à votre Dossier</h4>
+                {% include 'security/front_login.html.twig' %}
+            </div>
+        </div>
+    {% endif %}
 
-{% block body %}
-    <h1>Create new Ticket</h1>
 
-    {{ include('ticket/_form.html.twig') }}
-
-    <a href="{{ path('ticket_index') }}">back to list</a>
 {% endblock %}

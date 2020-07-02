@@ -1,12 +1,48 @@
-{{ form_start(form) }}
-    {{ form_row(form.name) }}
-    {{ form_row(form.surname) }}
-    {{ form_row(form.password) }}
-    {{ form_row(form.mail) }}
-    {{ form_row(form.department) }}
-    {{ form_row(form.fieldActivity) }}
-    {{ form_row(form.firstMessage) }}
-{#    {{ form_row(form.messages.vars.prototype.body) }}#}
-    {{ form_row(form._token) }}
-<button class="btn">{{ button_label|default('Save') }}</button>
+{{ form_start(form, {'attr': {'class': 'form-group'}}) }}
+<div class="form-row">
+    <div class="col-md-6 mb-3">
+        {{ form_row(form.name, {'attr': {'class': 'form-control'}}) }}
+    </div>
+    <div class="col-md-6 mb-3">
+        {{ form_row(form.surname, {'attr': {'class': 'form-control'}}) }}
+    </div>
+</div>
+<div class="form-row">
+    <div class="col-md-6 mb-3">
+        {{ form_row(form.mail, {'attr': {'class': 'form-control'}}) }}
+    </div>
+    <div class="col-md-3 mb-3">
+        {{ form_row(form.fieldActivity, {'attr': {'class': 'form-control'}}) }}
+    </div>
+    <div class="col-md-3 mb-3">
+        {{ form_row(form.department, {'attr': {'class': 'form-control'}}) }}
+    </div>
+</div>
+<div class="form-row">
+    <div class="col">
+        {{ form_row(form.firstMessage, {'attr': {'class': 'form-control'}, 'label': 'Message'}) }}
+    </div>
+</div>
+{{ form_row(form._token) }}
+<button class="btn btn-outline-success mt-2">{{ button_label|default('Envoyer') }}</button>
 {{ form_end(form, {'render_rest': false}) }}
+<script>
+    // Example starter JavaScript for disabling form submissions if there are invalid fields
+    (function () {
+        'use strict';
+        window.addEventListener('load', function () {
+            // Fetch all the forms we want to apply custom Bootstrap validation styles to
+            var forms = document.getElementsByClassName('needs-validation');
+            // Loop over them and prevent submission
+            var validation = Array.prototype.filter.call(forms, function (form) {
+                form.addEventListener('submit', function (event) {
+                    if (form.checkValidity() === false) {
+                        event.preventDefault();
+                        event.stopPropagation();
+                    }
+                    form.classList.add('was-validated');
+                }, false);
+            });
+        }, false);
+    })();
+</script>

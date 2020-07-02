@@ -61,7 +61,7 @@ class Ticket implements UserInterface
     private $firstMessage;
 
     /**
-     * @ORM\OneToMany(targetEntity=Message::class, mappedBy="ticket", cascade={"persist"})
+     * @ORM\OneToMany(targetEntity=Message::class, mappedBy="ticket", cascade={"persist", "remove"})
      */
     private $messages;
 

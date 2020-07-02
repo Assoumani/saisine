@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>{% block title %}Back{% endblock %}</title>
+    <title>{% block title %}Front{% endblock %}</title>
     {% block stylesheets %}
         <script src="https://use.fontawesome.com/1fa2d77378.js"></script>
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
@@ -12,24 +12,21 @@
 </head>
 <body>
 {% block body %}
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+        <a class="navbar-brand" href="#">Front</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown"
+                aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNavDropdown">
+            <ul class="nav">
+                <li class="nav-item">
+                    <a class="nav-link text-white" href="{{ path('home') }}">Accueil</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
     <div class="container mt-5 pt-5">
-        <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
-            <a class="navbar-brand" href="{{ path('admin') }}">Back</a>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown"
-                    aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNavDropdown">
-                <ul class="nav">
-                    <li class="nav-item">
-                        <a class="nav-link text-white" href="{{ path('admin') }}">Tableau de bord</a>
-                    </li>
-                    <li class="nav-item mr-2">
-                        <a class="btn btn-outline-info" href="{{ path('app_logout') }}">Déconnexion</a>
-                    </li>
-                </ul>
-            </div>
-        </nav>
         {% block page_content %}{% endblock %}
     </div>
 {% endblock %}

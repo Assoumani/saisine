@@ -76,7 +76,6 @@ class FrontLoginFormAuthenticator extends AbstractFormLoginAuthenticator impleme
 
         $user = $this->entityManager->getRepository(Ticket::class)->findOneBy(['name' => $credentials['username']]);
         if (!$user) {
-            dd($user);
             // fail authentication with a custom error
             throw new CustomUserMessageAuthenticationException('Username could not be found.');
         }
@@ -105,7 +104,7 @@ class FrontLoginFormAuthenticator extends AbstractFormLoginAuthenticator impleme
             return new RedirectResponse($targetPath);
         }
         return new RedirectResponse($this->urlGenerator->generate('ticket_show', [
-            'ticketNumber' => 'AS5EF9ECF7645AB'
+            'ticketNumber' => $this->getCredentials($request)['password']
         ]));
     }
 

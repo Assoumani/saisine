@@ -9,6 +9,7 @@ use App\Form\TicketType;
 use App\Repository\TicketRepository;
 use DateTime;
 use Exception;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -22,6 +23,7 @@ class TicketController extends AbstractController
 {
     /**
      * @Route("/", name="ticket_index", methods={"GET"})
+     * @IsGranted("ROLE_AGENT")
      * @param TicketRepository $ticketRepository
      * @return Response
      */
@@ -49,14 +51,15 @@ class TicketController extends AbstractController
             $entityManager = $this->getDoctrine()->getManager();
             $ticket->setCreatedAt(new DateTime());
             $ticket->setTicketNumber(strtoupper(uniqid(substr($ticket->getName(), 0, 2))));
-            $ticket->setPassword($passwordEncoder->encodePassword($ticket, $ticket->getPassword()));
+            $ticket->setPassword($passwordEncoder->encodePassword($ticket, $ticket->getTicketNumber()));
             $entityManager->persist($ticket);
             $entityManager->flush();
 
-            return $this->redirectToRoute('ticket_index');
+            return $this->redirectToRoute('ticket_show', ['ticketNumber' => $ticket->getTicketNumber()]);
         }
         return $this->render('ticket/new.html.twig', [
             'ticket' => $ticket,
+            'error' => null,
             'form' => $form->createView(),
         ]);
     }
@@ -69,7 +72,6 @@ class TicketController extends AbstractController
      */
     public function show(Request $request, Ticket $ticket): Response
     {
-        dump($this->getUser());
         $message = new Message();
         $form = $this->createForm(MessageType::class, $message);
         $form->handleRequest($request);

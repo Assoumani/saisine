@@ -20,23 +20,14 @@ security:
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
-        front:
-            anonymous: lazy
-            pattern: ^/front
-            provider: front_user_provider
-            guard:
-                authenticators:
-                    - App\Security\FrontLoginFormAuthenticator
-            stateless: false
-            context: front
-        default:
+        main:
             anonymous: lazy
             provider: back_user_provider
             guard:
                 authenticators:
                     - App\Security\LoginFormAuthenticator
-            stateless: false
-            context: front
+                    - App\Security\FrontLoginFormAuthenticator
+                entry_point: App\Security\LoginFormAuthenticator
             # activate different ways to authenticate
             # https://symfony.com/doc/current/security.html#firewalls-authentication
 

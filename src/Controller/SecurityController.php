@@ -61,6 +61,6 @@ class SecurityController extends AbstractController
         if ($request->server->get('HTTP_REFERER') === "http://127.0.0.1:8000/home") {
             return new RedirectResponse($this->generateUrl('home'));
         }
-        return $this->redirectToRoute('ticket_index');
+        return $this->redirectToRoute('admin');
     }
 }

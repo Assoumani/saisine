@@ -72,9 +72,7 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator implements P
         if (!$this->csrfTokenManager->isTokenValid($token)) {
             throw new InvalidCsrfTokenException();
         }
-
-        $user = $this->entityManager->getRepository(User::class)->findOneBy(['username' => $credentials['username']]);
-//        $user = $userProvider->loadUserByUsername($credentials['username']);
+        $user = $userProvider->loadUserByUsername($credentials['username']);
         if (!$user) {
             // fail authentication with a custom error
             throw new CustomUserMessageAuthenticationException('Username could not be found.');
@@ -104,7 +102,11 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator implements P
         if ($targetPath = $this->getTargetPath($request->getSession(), $providerKey)) {
             return new RedirectResponse($targetPath);
         }
-
+        if ($token->getUser()->getRoles()[0] === 'ROLE_USER') {
+            return new RedirectResponse($this->urlGenerator->generate('ticket_show', [
+                'ticketNumber' => $token->getUser()->getTicketNumber()
+            ]));
+        }
         return new RedirectResponse($this->urlGenerator->generate('ticket_index'));
     }
 

@@ -13,7 +13,9 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 /**
@@ -54,7 +56,10 @@ class TicketController extends AbstractController
             $ticket->setPassword($passwordEncoder->encodePassword($ticket, $ticket->getTicketNumber()));
             $entityManager->persist($ticket);
             $entityManager->flush();
-
+            if (!$this->getUser()) {
+                $this->addFlash('success', 'Requête envoyé avec succes. Consulter vos mails!');
+                return $this->redirectToRoute('home');
+            }
             return $this->redirectToRoute('ticket_show', ['ticketNumber' => $ticket->getTicketNumber()]);
         }
         return $this->render('ticket/new.html.twig', [

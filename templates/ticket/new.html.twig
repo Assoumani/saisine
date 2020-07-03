@@ -1,6 +1,13 @@
 {% extends is_granted("ROLE_AGENT") ? 'base.html.twig' : 'base_front.html.twig' %}
 
 {% block page_content %}
+    {% for label, messages in app.flashes %}
+        {% for message in messages %}
+            <div class="alert alert-{{label}}">
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endfor %}
     <h1>Nouveau Dossier</h1>
     {% if is_granted("ROLE_AGENT") %}
         {{ include('ticket/_form.html.twig') }}
@@ -15,7 +22,7 @@
             </div>
             <div class="col-4">
                 <h4>Acceder à votre Dossier</h4>
-                {% include 'security/front_login.html.twig' %}
+                {% include 'security/login.html.twig' %}
             </div>
         </div>
     {% endif %}

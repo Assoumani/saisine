@@ -7,8 +7,7 @@
     <div class="card border-primary p-3">
         <div class="row">
             <div class="col">
-                <span>Prénom : {{ ticket.name }}</span>
-                <span>Nom : {{ ticket.surname }}</span>
+                <span>Prénom : {{ ticket.name }}</span> - <span>Nom : {{ ticket.surname }}</span>
                 <hr>
                 <span>Domaine d'activité : {{ ticket.fieldActivity }}</span>
                 <hr>
@@ -41,7 +40,7 @@
             {% endfor %}
         {% endif %}
     </div>
-    <div class="card border-primary p-2 mb-3">
+    <div class="card border-primary p-2 my-3">
         {{ form_start(form, {'attr': {'class': 'form-group'}}) }}
         {{ form_row(form.body, {'attr': {'class': 'form-control'}, 'label': 'Réponse'}) }}
         {{ form_row(form.file, {'attr': {'class': 'custom-file'}}) }}

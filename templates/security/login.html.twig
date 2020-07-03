@@ -1,30 +1,23 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Log in!{% endblock %}
-
 {% block body %}
-    <div class="container mt-5 pt-5">
-        <div class="row justify-content-end m-3">
-            <a href="{{ path('home') }}" class="btn btn-outline-info">Go to Front</a>
-        </div>
-        <div class="row justify-content-center">
-            <div class="card border-primary p-3" style="width: 18rem;">
-                <form method="post">
-                    {% if error %}
-                        <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
-                    {% endif %}
 
-                    {% if app.user %}
-                        <div class="mb-3">
-                            You are logged in as {{ app.user.username }}, <a href="{{ path('app_logout') }}">Logout</a>
-                        </div>
-                    {% endif %}
+    <div class="row justify-content-center">
+        <div class="card border-primary p-3" style="width: 18rem;">
+            <form method="post" action="{{ path('app_login') }}">
+                {% if error %}
+                    <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+                {% endif %}
 
-                    <h1 class="h3 mb-3 font-weight-normal">Admin Access</h1>
+                {% if app.user %}
+                    <div class="mb-3">
+                        Vous êtes connectés, cher(e) {{ app.user.username }} !
+                    </div>
+                    <a href="{{ path('show_ticket') }}" class="btn btn-outline-primary">Acceder à votre dossier</a>
+                    <a href="{{ path('app_logout') }}" class="btn btn-outline-primary m-2">Déconnexion</a>
+                {% else %}
                     <label for="inputUsername">Username</label>
-                    <input type="text" value="{{ last_username }}" name="username" id="inputUsername"
-                           class="form-control"
-                           required autofocus>
+                    <input type="text" value="" name="username" id="inputUsername" class="form-control" required autofocus>
                     <label for="inputPassword">Password</label>
                     <input type="password" name="password" id="inputPassword" class="form-control" required>
 
@@ -43,11 +36,14 @@
                         </div>
                     #}
 
-                    <button class="btn btn-outline-primary   mt-2" type="submit">
+                    <button class="btn btn-lg btn-primary mt-2" type="submit">
                         Sign in
                     </button>
-                </form>
-            </div>
+                {% endif %}
+            </form>
         </div>
     </div>
 {% endblock %}
+{#<div class="row justify-content-end m-3">#}
+{#    <a href="{{ path('home') }}" class="btn btn-outline-info">Go to Front</a>#}
+{#</div>#}

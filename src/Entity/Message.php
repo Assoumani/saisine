@@ -25,11 +25,6 @@ class Message
     private $body;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $file;
-
-    /**
      * @ORM\ManyToOne(targetEntity=Ticket::class, inversedBy="messages")
      */
     private $ticket;
@@ -52,18 +47,6 @@ class Message
     public function setBody(?string $body): self
     {
         $this->body = $body;
-
-        return $this;
-    }
-
-    public function getFile(): ?string
-    {
-        return $this->file;
-    }
-
-    public function setFile(?string $file): self
-    {
-        $this->file = $file;
 
         return $this;
     }

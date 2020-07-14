@@ -7,10 +7,12 @@ use App\Entity\Ticket;
 use App\Form\MessageType;
 use App\Form\TicketType;
 use App\Repository\TicketRepository;
+use App\Service\FileUploader;
 use DateTime;
 use Exception;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
@@ -73,17 +75,32 @@ class TicketController extends AbstractController
      * @Route("/{ticketNumber}", name="ticket_show", methods={"GET", "POST"})
      * @param Request $request
      * @param Ticket $ticket
+     * @param FileUploader $fileUploader
      * @return Response
      */
-    public function show(Request $request, Ticket $ticket): Response
+    public function show(Request $request, Ticket $ticket, FileUploader $fileUploader): Response
     {
+        $entityManager = $this->getDoctrine()->getManager();
         $message = new Message();
         $form = $this->createForm(MessageType::class, $message);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
+            $files = $form->get('file')->getData();
+            $fileNames = [];
+            if ($files){
+                foreach ($files as $file){
+                    $fileNames[] = $fileUploader->upload($file);
+                }
+                if ($ticket->getFiles()) {
+                    foreach ($ticket->getFiles() as $fileName) {
+                        $fileNames[] = $fileName;
+                    }
+                }
+                $ticket->setFiles($fileNames);
+                $entityManager->persist($ticket);
+            }
             $message->setTicket($ticket);
             $message->setAuthorRole($this->getUser()->getUsername());
-            $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($message);
             $entityManager->flush();
             return $this->redirectToRoute('ticket_show', ['ticketNumber' => $ticket->getTicketNumber()]);

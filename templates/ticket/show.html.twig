@@ -28,6 +28,11 @@
                 </div>
             </div>
         </div>
+        <div class="row">
+            {% for file in ticket.files %}
+                <a href="{{ asset('uploads/files/' ~ file) }}">{{ file }}</a> <br>
+            {% endfor %}
+        </div>
     </div>
     <nav id="nav_messages"></nav>
     <div data-spy="scroll" data-target="#nav_messages" data-offset="0">

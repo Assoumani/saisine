@@ -85,10 +85,9 @@ class TicketController extends AbstractController
         $form = $this->createForm(MessageType::class, $message);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            $files = $form->get('file')->getData();
             $fileNames = [];
-            if ($files){
-                foreach ($files as $file){
+            if ($form->get('files')->getData()) {
+                foreach ($form->get('files')->getData() as $file) {
                     $fileNames[] = $fileUploader->upload($file);
                 }
                 if ($ticket->getFiles()) {

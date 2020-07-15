@@ -298,7 +298,6 @@ class Ticket implements UserInterface
     public function setFiles(?array $files): self
     {
         $this->files = $files;
-
         return $this;
     }
 }

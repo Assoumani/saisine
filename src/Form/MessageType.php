@@ -3,7 +3,9 @@
 namespace App\Form;
 
 use App\Entity\Message;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -15,10 +17,9 @@ class MessageType extends AbstractType
     {
         $builder
             ->add('body')
-            ->add('file', FileType::class, [
-                'required' => false,
+            ->add('files', FileType::class, [
                 'mapped' => false,
-                'multiple' => true,
+                'multiple' => true
             ])
         ;
     }

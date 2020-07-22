@@ -59,7 +59,7 @@ class TicketController extends AbstractController
             $entityManager->persist($ticket);
             $entityManager->flush();
             if (!$this->getUser()) {
-                $this->addFlash('success', 'Requête envoyé avec succes. Consulter vos mails!');
+                $this->addFlash('success', 'Requête envoyée avec succes. Consulter vos mails!');
                 return $this->redirectToRoute('home');
             }
             return $this->redirectToRoute('ticket_show', ['ticketNumber' => $ticket->getTicketNumber()]);

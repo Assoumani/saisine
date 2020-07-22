@@ -19,7 +19,8 @@ class MessageType extends AbstractType
             ->add('body')
             ->add('files', FileType::class, [
                 'mapped' => false,
-                'multiple' => true
+                'multiple' => true,
+                'required' => false
             ])
         ;
     }

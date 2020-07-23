@@ -33,12 +33,14 @@ class SecurityController extends AbstractController
 
     /**
      * @Route("/logout", name="app_logout")
+     * @param Request $request
+     * @return RedirectResponse
      */
     public function logout(Request $request)
     {
         if ($this->isGranted('ROLE_USER')) {
             $request->getSession()->clear();
-            return new RedirectResponse($this->generateUrl('home'));
+            return $this->redirectToRoute('home');
         }
         $request->getSession()->clear();
         return $this->redirectToRoute('admin');

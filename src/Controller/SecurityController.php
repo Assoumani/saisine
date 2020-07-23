@@ -38,8 +38,8 @@ class SecurityController extends AbstractController
      */
     public function logout(Request $request)
     {
-        if ($this->isGranted('ROLE_USER')) {
-            $request->getSession()->clear();
+        $request->getSession()->clear();
+        if ($request->server->get('HTTP_REFERER') == 'https://lit-chamber-76208.herokuapp.com/index.php/home') {
             return $this->redirectToRoute('home');
         }
         return $this->redirectToRoute('admin');

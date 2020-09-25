@@ -135,6 +135,9 @@ class TicketController extends AbstractController
 
     /**
      * @Route("/{id}", name="ticket_delete", methods={"DELETE"})
+     * @param Request $request
+     * @param Ticket $ticket
+     * @return Response
      */
     public function delete(Request $request, Ticket $ticket): Response
     {

@@ -70,6 +70,11 @@ class Ticket implements UserInterface
      */
     private $password;
 
+    /**
+     * @ORM\Column(type="json", nullable=true)
+     */
+    private $files = [];
+
     public function __construct()
     {
         $this->messages = new ArrayCollection();
@@ -282,6 +287,17 @@ class Ticket implements UserInterface
     {
         $this->password = $password;
 
+        return $this;
+    }
+
+    public function getFiles(): ?array
+    {
+        return $this->files;
+    }
+
+    public function setFiles(?array $files): self
+    {
+        $this->files = $files;
         return $this;
     }
 }

@@ -19,9 +19,9 @@ class SecurityController extends AbstractController
      */
     public function login(Request $request, AuthenticationUtils $authenticationUtils): Response
     {
-         if ($this->getUser()) {
-             return $this->redirect($request->getSession()->get('_security.ticket.target_path'));
-         }
+        if ($this->getUser()) {
+            return $this->redirect($request->getSession()->get('_security.ticket.target_path'));
+        }
 
         // get the login error if there is one
         $error = $authenticationUtils->getLastAuthenticationError();
@@ -33,12 +33,14 @@ class SecurityController extends AbstractController
 
     /**
      * @Route("/logout", name="app_logout")
+     * @param Request $request
+     * @return RedirectResponse
      */
     public function logout(Request $request)
     {
         $request->getSession()->clear();
-        if ($request->server->get('HTTP_REFERER') === "http://127.0.0.1:8000/home") {
-            return new RedirectResponse($this->generateUrl('home'));
+        if ($request->server->get('HTTP_REFERER') == 'https://saisine.herokuapp.com/home') {
+            return $this->redirectToRoute('home');
         }
         return $this->redirectToRoute('admin');
     }

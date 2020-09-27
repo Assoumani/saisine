@@ -25,14 +25,15 @@ class Message
     private $body;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Ticket::class, inversedBy="messages")
-     */
-    private $ticket;
-
-    /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $authorRole;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Ticket::class, inversedBy="messages")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $ticket;
 
     public function getId(): ?int
     {
@@ -51,18 +52,6 @@ class Message
         return $this;
     }
 
-    public function getTicket(): ?Ticket
-    {
-        return $this->ticket;   
-    }
-
-    public function setTicket(?Ticket $ticket): self
-    {
-        $this->ticket = $ticket;
-
-        return $this;
-    }
-
     public function __toString()
     {
         return (string) $this->body;
@@ -76,6 +65,18 @@ class Message
     public function setAuthorRole(string $authorRole): self
     {
         $this->authorRole = $authorRole;
+
+        return $this;
+    }
+
+    public function getTicket(): ?Ticket
+    {
+        return $this->ticket;
+    }
+
+    public function setTicket(?Ticket $ticket): self
+    {
+        $this->ticket = $ticket;
 
         return $this;
     }
